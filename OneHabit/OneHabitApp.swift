@@ -1,10 +1,3 @@
-//
-//  OneHabitApp.swift
-//  OneHabit
-//
-//  Created by Patrick Leonard on 1/24/24.
-//
-
 import SwiftUI
 
 @main

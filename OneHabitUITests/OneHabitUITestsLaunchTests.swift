@@ -1,10 +1,3 @@
-//
-//  OneHabitUITestsLaunchTests.swift
-//  OneHabitUITests
-//
-//  Created by Patrick Leonard on 1/24/24.
-//
-
 import XCTest
 
 final class OneHabitUITestsLaunchTests: XCTestCase {

@@ -6,5 +6,6 @@ struct OneHabitApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Habit.self)
     }
 }

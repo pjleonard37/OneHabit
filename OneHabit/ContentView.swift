@@ -1,35 +1,45 @@
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-    @State private var habitCount = 0
-    @State private var showAlert = false
+    @Query var habits: [Habit]
+    private var habit: Habit {
+        return habits.first ?? Habit(name: "nothing", details: "New details")
+    }
+    @Environment(\.modelContext) private var modelContext
+    @State private var isPresented: Bool = false
     
     var body: some View {
         VStack {
-            Text("You've completed your habit \(habitCount) times.")
-            Button("Record habbit") {
-                showAlert.toggle()
+            NavigationStack {
+                Text("You're tracking \(habit.name)")
+                Text("You've completed \(habit.name) \(habit.count!) times.")
+                    .navigationTitle("One habit")
+                    .toolbar {
+                        Button {
+                            isPresented = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                if habit.needsCompletion() {
+                    Button("Mark \(habit.name) as complete?") {
+                        habit.lastCompleted = Date.now
+                    }
+                } else {
+                    Text("You're done for the day!")
+                }
             }
+            Color.main
         }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Habbit name"),
-                message: Text("Did you complete your habbit today?"),
-                primaryButton: .default(
-                    Text("Yes!"),
-                    action: {
-                        habitCount += 1
-                    }
-                ),
-                secondaryButton: .cancel(
-                    Text("No"),
-                    action: {
-                        print("badddy")
-                    }
-                )
-            )
-        }
+        .sheet(isPresented: $isPresented, content: {
+            EditHabitView(habit: habit)
+        })
         .padding()
+        .background {
+            Color.main
+                .ignoresSafeArea()
+        }
     }
 }
 
